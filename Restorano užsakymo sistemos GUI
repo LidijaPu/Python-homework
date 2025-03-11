@@ -1,0 +1,71 @@
+import tkinter as tk
+from tkinter import messagebox
+
+class Patiekalai:
+    def __init__(self, pavadinimas, kaina):
+        self.pavadinimas = pavadinimas
+        self.kaina = kaina
+
+    def informacija(self):
+        return f"{self.pavadinimas} - {self.kaina} Eur"
+
+class Restoranas:
+    def __init__(self, pavadinimas):
+        self.pavadinimas = pavadinimas
+        self.uzsakymas = []
+        self.bendra_suma = 0
+
+    def prideti_prie_uzsakymo(self, patiekalas):
+        self.uzsakymas.append(patiekalas)
+        self.bendra_suma += patiekalas.kaina
+        messagebox.showinfo("Patiekalas", f"{patiekalas.pavadinimas} pridėtas prie užsakymo")
+
+    def rodyti_uzsakyma(self):
+        uzsakymo_langas = tk.Tk()
+        uzsakymo_langas.title("Užsakymas")
+        tk.Label(uzsakymo_langas, text="Jūsų užsakymas:").pack()
+        for patiekalas in self.uzsakymas:
+            tk.Label(uzsakymo_langas, text=patiekalas.informacija()).pack()
+        tk.Label(uzsakymo_langas, text=f"Bendra suma: {self.bendra_suma} Eur").pack()
+        uzsakymo_langas.mainloop()
+
+restoranas = Restoranas("Restoranas")
+
+#patiekalai
+patiekalas1 = Patiekalai("Pica", 10)
+patiekalas2 = Patiekalai("Sriuba", 5)
+patiekalas3 = Patiekalai("Salotos", 6)
+patiekalas4 = Patiekalai("Blynai", 5)
+patiekalas5 = Patiekalai("Pyragas", 4)
+patiekalas6 = Patiekalai("Ledai", 4)
+
+def prideti_prie_uzsakymo(patiekalas):
+    restoranas.prideti_prie_uzsakymo(patiekalas)
+
+
+g = tk.Tk()
+g.title("Restorano Meniu")
+
+#mygtukai
+mygtukas_pica = tk.Button(g, text=patiekalas1.informacija(),command=lambda: prideti_prie_uzsakymo(patiekalas1))
+mygtukas_pica.pack()
+
+mygtukas_sriuba = tk.Button(g, text=patiekalas2.informacija(),command=lambda: prideti_prie_uzsakymo(patiekalas2))
+mygtukas_sriuba.pack()
+
+mygtukas_salotos = tk.Button(g, text=patiekalas3.informacija(),command=lambda: prideti_prie_uzsakymo(patiekalas3))
+mygtukas_salotos.pack()
+
+mygtukas_blynai = tk.Button(g, text=patiekalas4.informacija(),command=lambda: prideti_prie_uzsakymo(patiekalas4))
+mygtukas_blynai.pack()
+
+mygtukas_pyragas = tk.Button(g, text=patiekalas5.informacija(),command=lambda: prideti_prie_uzsakymo(patiekalas5))
+mygtukas_pyragas.pack()
+
+mygtukas_ledai = tk.Button(g, text=patiekalas6.informacija(),command=lambda: prideti_prie_uzsakymo(patiekalas6))
+mygtukas_ledai.pack()
+
+mygtukas_uzsakymas = tk.Button(g, text="Rodyti užsakymą",command=restoranas.rodyti_uzsakyma)
+mygtukas_uzsakymas.pack()
+
+g.mainloop()
