@@ -1,0 +1,78 @@
+class Patiekalai:
+    def __init__(self, pavadinimas, kaina):
+        self.pavadinimas = pavadinimas
+        self.kaina = kaina
+
+    def informacija(self):
+        return f"{self.pavadinimas} - {self.kaina} Eur"
+
+class Meniu:
+    def __init__(self):
+        self.patiekalai = []
+
+    def prideti_patiekalai(self, patiekalai):
+        self.patiekalai.extend(patiekalai)
+
+    def meniu(self):
+        print("Meniu:")
+        for i, patiekalai in enumerate(self.patiekalai, start=1):
+            print(f"{i}. {patiekalai.informacija()}")
+
+    def gauti_patiekalai(self, pasirinkimai):
+        return [self.patiekalai[i - 1] for i in pasirinkimai if 1 <= i <= len(self.patiekalai)]
+
+class Restoranas:
+    def __init__(self, pavadinimas):
+        self.pavadinimas = pavadinimas
+        self.meniu = Meniu()
+        self.uzsakymas = []
+
+    def sukurti_uzsakyma(self, patiekalai_numeriai):
+        uzsakymo_patiekalai = self.meniu.gauti_patiekalai(patiekalai_numeriai)
+        self.uzsakymas.extend(uzsakymo_patiekalai)
+        print("Užsakymas sukurtas.")
+
+    def rodomas_uzsakymas(self):
+        print("Jūsų užsakymas:")
+        for patiekalai in self.uzsakymas:
+            print(patiekalai.informacija())
+
+    def suma(self):
+        bendra_suma = sum(patiekalai.kaina for patiekalai in self.uzsakymas)
+        print(f"Užsakymo bendra suma: {bendra_suma} Eur")
+        self.uzsakymas = []
+
+#patiekalai
+patiekalas1 = Patiekalai("Pica", 10)
+patiekalas2 = Patiekalai("Sriuba", 5)
+patiekalas3 = Patiekalai("Salotos", 6)
+patiekalas4 = Patiekalai("Blynai", 5)
+patiekalas5 = Patiekalai("Pyragas", 4)
+patiekalas6 = Patiekalai("Ledai", 4)
+
+#meniu
+meniu = Meniu()
+meniu.prideti_patiekalai([patiekalas1, patiekalas2, patiekalas3, patiekalas4, patiekalas5, patiekalas6])
+
+#restoranas
+restoranas = Restoranas("Geras Restoranas")
+restoranas.meniu = meniu
+restoranas.meniu.meniu()
+
+
+uzsakymo_numeriai = []
+while True:
+    pasirinkimas = input("Pasirinkite patiekalo numerį iš meniu (baigti - 'viskas'): ")
+    if pasirinkimas.lower() == 'viskas':
+        break
+    try:
+        numeris = int(pasirinkimas)
+        uzsakymo_numeriai.append(numeris)
+    except ValueError:
+        print("Neteisingas pasirinkimas. Rinkitės dar kartą.")
+
+
+restoranas.sukurti_uzsakyma(uzsakymo_numeriai)
+restoranas.rodomas_uzsakymas()
+restoranas.suma()
+
